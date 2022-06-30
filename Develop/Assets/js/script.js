@@ -14,27 +14,44 @@ divBlock.append(divBtn);
 function handleDate(){
     var now = moment().format("dddd MMMM Do YYYY hh:mm:ss a");
     currentDay.text(now);
+    // take the current hour and return it as integer to be compared
+    //for changing backgroun color purposes
+    var current_hour = moment().format("H");
+    return parseInt(current_hour);
 }
 //function that will append the divBloks to the container
-function addDiv(){
+function addDiv(blockTime){
+     //call change background and send the blocktime
+    changebackground(blockTime);
     container.append(divBlock.clone());
 }
+
+//function check background according to the time
+function changebackground(blockTime){
+    var current_hour = handleDate();
+    //current_hour =10;
+    ///bacground color
+    if(current_hour > blockTime){
+        // grey bacground
+        divDescription.css("background","grey");
+    }else if(current_hour == blockTime){
+        //red bracground
+        divDescription.css("background","red");
+    }else{
+      //green background
+      divDescription.css("background","green");
+    }
+}
+
 //Defining time blocks for business hours.
 //adding the hours to divTimeBlock a for  for the morning hours
-for(j=9; j<=12; j++){
-    if(j<12){
-        var text = j+" :AM";
-    }else{
-        var text = j+" :PM";
-    }
+for(j= 9; j<= 17; j++){
+    //text with 12h format for the time colum
+    var text = moment(j,"h").format("h A");
+    //hour in 24 format to be compared
+    var hour =parseInt(moment(j,"H").format("H"));
     divTimeBlock.text(text);
-    addDiv();
-}
-//adding afternoon hours
-for(var i = 1; i <= 5; i++){
-    var text = i+" :PM";
-    divTimeBlock.text(text);
-    addDiv();
+    addDiv(hour);
 }
 
 //calling handledate
