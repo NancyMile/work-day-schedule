@@ -2,13 +2,18 @@ var currentDay = $("#currentDay");
 var container = $(".container");
 //defining the block containing the time,discriptionand save btn and its classes
 var divBlock = $("<div>").addClass("row");
+var divForm = $("<div>").addClass("input-group mb-3");
+var blockForm = $("<form method='POST'onSubmit = 'saveDescription(event)'>").addClass("input-group mb-3");;
+var inputForm = $("<input class = 'form-control' type = 'textarea' value = '' name = 'description'>");
 var divTimeBlock = $("<div>").addClass("time-block col-12 col-md-2 col-lg-2");
-var divDescription = $("<div>").addClass("description col-12 col-md-9 col-lg-9");
-var divBtn = $("<div>").addClass("saveBtn col-12 col-md-1 col-lg-1");
+var divDescription = $("<div>").addClass("description input-group input-group-lg col-12 col-md-9 col-lg-9");
+var divBtn = $("<div>").addClass("saveBtn justify-content-md-end col-12 col-md-1 col-lg-1");
 //append divs time, description and btn  tothe divBlock
-divBlock.append(divTimeBlock);
-divBlock.append(divDescription);
-divBlock.append(divBtn);
+divBlock.append(divForm);
+divForm.append(blockForm);
+blockForm.append(divTimeBlock, divDescription, divBtn);
+divDescription.append(inputForm);
+divBtn.append("<button type='submit' class='btn btn-primary'><i class='bi bi-archive'></i>Save</button>");
 
 // function handle date to be displayed on header
 function handleDate(){
@@ -43,6 +48,17 @@ function changebackground(blockTime){
     }
 }
 
+//fuction save description
+function saveDescription(event){
+   event.preventDefault();
+   var a = JSON.stringify(event.target.id);
+   var new_a = a.substring(5);
+   var nueva = '"#'+new_a;
+   console.log("save description function");
+   localStorage.setItem("description", a);
+   localStorage.setItem("segundo", nueva);
+}
+
 //Defining time blocks for business hours.
 //adding the hours to divTimeBlock a for  for the morning hours
 for(j= 9; j<= 17; j++){
@@ -51,6 +67,12 @@ for(j= 9; j<= 17; j++){
     //hour in 24 format to be compared
     var hour =parseInt(moment(j,"H").format("H"));
     divTimeBlock.text(text);
+    //add attribute id  to the form
+    blockForm.attr("id","des_"+text);
+    //set some attributes id and onclick event
+    inputForm.attr("id",text);
+    //blockForm.attr("onSubmit",saveDescription(this));
+    //append the divBlock
     addDiv(hour);
 }
 
