@@ -4,10 +4,12 @@ var container = $(".container");
 var divBlock = $("<div>").addClass("row");
 var divForm = $("<div>").addClass("input-group mb-3");
 var blockForm = $("<form method='POST'onSubmit = 'saveDescription(event)'>").addClass("input-group mb-3");;
-var inputForm = $("<input class = 'form-control' type = 'textarea' value = '' name = 'description'>");
+var inputForm = $("<input class = 'form-control' type = 'text' value = '' name = 'description'>");
 var divTimeBlock = $("<div>").addClass("time-block col-12 col-md-2 col-lg-2");
 var divDescription = $("<div>").addClass("description input-group input-group-lg col-12 col-md-9 col-lg-9");
 var divBtn = $("<div>").addClass("saveBtn justify-content-md-end col-12 col-md-1 col-lg-1");
+var current_hour = handleDate();
+    
 //append divs time, description and btn  tothe divBlock
 divBlock.append(divForm);
 divForm.append(blockForm);
@@ -38,12 +40,19 @@ function changebackground(blockTime){
     if(current_hour > blockTime){
         // grey bacground
         divDescription.css("background","grey");
+        inputForm.css("background","grey");
+        inputForm.attr("readOnly", true);
     }else if(current_hour == blockTime){
         //red bracground
         divDescription.css("background","red");
+        inputForm.attr("readOnly", true);
+        inputForm.css("background","red");
+        // document.getElementById('input_'+current_hour).disabled = true;
     }else{
       //green background
       divDescription.css("background","green");
+      inputForm.css("background","green");
+      inputForm.attr("readOnly", false);
     }
 }
 
@@ -69,6 +78,15 @@ for(j= 9; j<= 17; j++){
     //set some attributes id and onclick event
     inputForm.attr("id", "input_"+id);
     inputForm.attr("value", window.localStorage.getItem("description_"+id));
+
+
+    // if(current_hour > j){
+    //     inputForm.attr("readOnly", true);
+    // }
+   
+       
+
+
     //blockForm.attr("onSubmit",saveDescription(this));
     //append the divBlock
     addDiv(hour);
